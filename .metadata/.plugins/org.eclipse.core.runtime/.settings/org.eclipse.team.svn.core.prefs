@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+externalMigrateFromAuthorizationDatabase/isMigrated=true
+migrateFromAuthorizationDatabase/isMigrated=true
+repositories/202bab8a8ed2001415d6b00fd7166ecf=202bab8a8ed2001415d6b00fd7166ecf;https\://203.236.209.42/svn/sns_project;https\://203.236.209.42/svn/sns_project;branches;tags;trunk;true;6da0b38a-b3e6-ac4e-a895-3f242919fe22;https\://203.236.209.42/svn/sns_project;;false;<https\://203.236.209.42\:443> VisualSVN Server;;0
+repositories/3057126733d10014155e86b6cf626089=3057126733d10014155e86b6cf626089;https\://203.236.209.42/svn/ki;https\://203.236.209.42/svn/ki;branches;tags;trunk;true;84054ec1-8dd6-c046-beab-382645dc4f18;https\://203.236.209.42/svn/ki;;false;;;0
+repositories/4073a240edd1001418fe99dfd68fc2ed=4073a240edd1001418fe99dfd68fc2ed;https\://203.236.209.42/svn/kisns;https\://203.236.209.42/svn/kisns;branches;tags;trunk;true;;;;false;<https\://203.236.209.42\:443> VisualSVN Server;;0

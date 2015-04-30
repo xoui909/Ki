@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ki">
+
+<!--회원가입-->
+	<insert id="join" parameterType="mybatis.UsrVO">
+		insert into usr values(usr_seq.nextval,#{u_id},#{u_pw},#{u_name},'images/profile_temp.png',#{u_birth},#{u_gender},null,#{u_tel},#{u_email},0)
+	</insert>
+<!--컬렉션등록-->
+	<insert id="collection">
+		insert into collection values(usr_seq.currval,0,0,0,0,0,0,0,0,0,0,0,0,0)
+	</insert>
+<!-- 컬렉션받기 -->
+	<select id="collectionList" parameterType="String" resultType="mybatis.CollectionVO">
+		select * from collection where u_idx=#{u_idx}
+	</select>
+	<update id="collectionUp" parameterType="mybatis.CollectionVO">
+		update collection set img1=#{img1},img2=#{img2},img3=#{img3},img4=#{img4},img5=#{img5},img6=#{img6},img7=#{img7},img8=#{img8},img9=#{img9},img10=#{img10},img11=#{img11},img12=#{img12},img13=#{img13}
+	</update>
+<!--로그인-->
+	<select id="login" parameterType="String" resultType="mybatis.UsrVO">
+		select * from usr where u_id=#{u_id} 
+	</select>
+<!--정보수정-->	
+	<update id="edit" parameterType="mybatis.UsrVO">
+		update usr set u_name=#{u_name},u_email=#{u_email},u_tel=#{u_tel} where u_idx = #{u_idx} 		
+	</update>
+<!--프로필 이미지 수정-->	
+	<update id="editImage" parameterType="mybatis.UsrVO">
+		update usr set u_image=#{u_image} where u_idx = #{u_idx} 		
+	</update>
+
+<!-- 아이디 중복 체크 -->
+	<select id="id_chk" parameterType="String" resultType="int">
+		select count(*) from usr where u_id=#{u_id}
+	</select>
+	
+<!-- 로그인하려는 아이디의 탈퇴여부 -->
+	<select id="leave_chk" parameterType="String" resultType="String">
+		select u_status from usr where u_id=#{u_id}
+	</select>
+	
+<!-- 아이디로 암호화 된 비밀번호 찾기 -->
+	<select id="find_pw" parameterType="String" resultType="String">
+		select u_pw from usr where u_id=#{u_id}
+	</select>
+	
+	<!--글쓰기-->
+	<insert id="ki_write" parameterType="mybatis.KiVO">
+		insert into ki values(ki_seq.nextval,#{u_idx},#{k_kind},#{k_content},#{k_image},#{k_max},0,sysdate)
+	</insert>
+
+
+<!--내 글 보기-->
+<!--	<select id="my_ki" parameterType="mybatis.KiVO" resultType="mybatis.KiVO">
+		select * from ki where u_idx = #{u_idx} order by k_idx
+	</select>
+-->
+
+<!-- 모든 글 보기 -->	
+	<select id="allList" resultType="mybatis.KiVO">
+		select b.u_name, b.u_image, a.* from ki a
+		inner join usr b
+		on a.u_idx = b.u_idx order by a.k_idx desc
+	</select>
+	
+<!-- 모든 코멘트 불러오기 -->
+	<select id="reList" resultType="mybatis.KireVO">
+		select b.u_name, b.u_image, a.* from ki_re a
+		inner join usr b
+		on a.r_u_idx = b.u_idx order by a.r_idx desc
+	</select>
+	
+	<!-- 모든 회원 정보 불러오기 -->	
+	<select id="allUserList" resultType="mybatis.UsrVO">
+		select * from usr order by u_idx desc
+	</select>
+		
+<!-- 한 명 글 보기 (내 글 보기)-->
+	<select id="myList" parameterType="String" resultType="mybatis.KiVO">
+ 		select * from ki where u_idx = #{u_idx} order by k_idx desc 
+	</select>
+
+<!-- 한 사람 정보 불러오기 -->
+	<select id="oneUsr" parameterType="String" resultType="mybatis.UsrVO">
+		select * from usr where  u_idx = #{u_idx}
+	</select>
+	
+<!-- 기 코멘트 입력 -->
+	<insert id="ki_cmt_add" parameterType="mybatis.KireVO">
+		insert into ki_re values(KI_RE_SEQ.nextval,#{k_idx},#{r_u_idx},#{r_content}, sysdate)
+	</insert>
+	
+	<!-- 내 소원보기 -->
+	<select id="my_wish" parameterType="String" resultType="mybatis.WishVO">
+		select * from wish where u_idx=#{u_idx} order by w_idx desc
+	</select>
+	
+	<!-- 현재 소원 -->
+	<select id="one_wish" parameterType="String" resultType="mybatis.WishVO">
+		select * from wish where u_idx=#{u_idx} and w_status='1'
+	</select>
+	
+	<!-- 소원 쓰기 -->
+	<insert id="wish_write" parameterType="mybatis.WishVO">
+		insert into wish values(wish_seq.nextval,#{u_idx},'1','0',#{w_max_ki},#{w_content},sysdate)
+	</insert>
+	
+	<!-- 기 증가 -->
+	<update id="hit" parameterType="String">
+		update ki set k_hit=k_hit+1 where k_idx=#{k_idx}
+	</update>
+	
+	<!-- 소원에 기 증가 -->
+	<update id="cur_ki" parameterType="String">
+		update wish set w_cur_ki=w_cur_ki+1 where u_idx=#{my_idx} and w_status='1'
+	</update>
+	
+	<!-- 소원등록시 기존소원 status=0 -->
+	<update id="wish_status" parameterType="java.util.Map">
+		update wish set w_status=#{w_status} where w_status='1' and u_idx=#{u_idx}
+	</update>
+	
+	<select id="check" parameterType="mybatis.KieeVO" resultType="int">
+		select count(*) from ki_ee where ki_u_idx=#{ki_u_idx} and k_idx=#{k_idx}
+	</select>
+	
+	<insert id="kiee" parameterType="mybatis.KieeVO">
+		insert into ki_ee values(ki_ee_seq.nextval,#{ki_u_idx},#{k_idx},sysdate)
+	</insert>
+
+	<!-- 친구목록 -->
+	<select id="friend_list" parameterType="String" resultType="mybatis.UsrVO" >
+		select b.* from friend a inner join usr b on a.f_idx = b.u_idx where f_u_idx=#{u_idx}
+	</select>
+	
+	
+	<!-- 나를 등록한 친구목록 -->
+	<select id="friendto" parameterType="String" resultType="mybatis.UsrVO" >
+		select b.* from friend a inner join usr b on a.f_u_idx = b.u_idx where a.f_idx =#{u_idx}
+	</select>
+	
+	<!-- 친구추가 -->
+	<insert id="friend_add" parameterType="mybatis.FriendVO">
+		insert into friend values(#{f_u_idx}, #{f_idx})
+	</insert>
+	
+	<!-- 친구삭제 -->
+	<delete id="friend_del" parameterType="mybatis.FriendVO">
+		delete from friend where f_u_idx=#{f_u_idx} and f_idx=#{f_idx}
+	</delete>
+	
+	<delete id="leave_fr_delete" parameterType="String">
+		delete from friend where f_u_idx=#{u_idx} or f_idx=#{u_idx}
+	</delete>
+	
+	<!-- 친구글보기 -->
+	<select id="friend_writing" parameterType="String" resultType="mybatis.KiVO">
+		select c.u_name, c.u_image, a.* from ki a inner join friend b on #{u_idx} = b.f_u_idx inner join usr c on c.u_idx = a.u_idx where b.f_idx = a.u_idx order by a.k_idx desc
+	</select>
+	
+	<!-- 글 삭제를 위해 리플을 삭제 -->
+	<delete id="ki_re_all_delete" parameterType="String">
+		delete from ki_re where k_idx=#{k_idx}
+	</delete>
+	
+	<!-- 글 삭제 -->
+	<delete id="ki_delete" parameterType="String">
+		delete from ki where k_idx=#{k_idx}
+	</delete>
+	
+	<!-- 글 수정을 위해서 내용 불러오기 -->
+	<select id="one" parameterType="String" resultType="mybatis.KiVO">
+		select * from ki where k_idx=#{k_idx}		
+	</select>
+	
+	<!-- 글 수정 (이미지 제외) -->
+	<update id="ki_modify" parameterType="mybatis.KiVO">
+		update ki set k_content=#{k_content}, k_kind=#{k_kind} where k_idx=#{k_idx}
+	</update>
+	
+	<!-- 글 수정 (이미지 포함) -->
+	<update id="ki_modify_image" parameterType="mybatis.KiVO">
+		update ki set k_image=#{k_image}, k_content=#{k_content}, k_kind=#{k_kind} where k_idx=#{k_idx}
+	</update>
+	
+	<!-- 비밀번호 수정 -->	
+	<update id="edit_password" parameterType="mybatis.UsrVO">
+		update usr set u_pw=#{u_pw} where u_idx=#{u_idx}
+	</update>
+	
+	<!-- 탈퇴하기 전 리플을 지우기 위해서 작성한 글의 k_idx를 찾는다. -->
+	<select id="leave_find_ki" parameterType="String" resultType="mybatis.KiVO">
+		select k_idx from ki where u_idx=#{u_idx}
+	</select>
+	
+	<!-- 위의 쿼리문에서 찾는 k_idx로 해당 글의 리플을 지운다. -->
+	<delete id="leave_ki_re_all_delete" parameterType="String">
+		delete from ki_re where k_idx=#{k_idx}
+	</delete> 
+	
+	<!-- 탈퇴하기 전 글 삭제 -->
+	<delete id="leave_ki_delete" parameterType="String">
+		delete from ki where u_idx=#{u_idx}
+	</delete>
+	
+	<!-- 탈퇴하기 전 작성한 리플을 삭제 -->
+	<delete id="leave_ki_re_delete" parameterType="String">
+		delete from ki_re where r_u_idx=#{u_idx}
+	</delete>
+	
+	<!-- 탈퇴하기 전 소원 삭제 -->
+	<delete id="leave_wish_delete" parameterType="String">
+		delete from wish where u_idx=#{u_idx}
+	</delete>
+	<!-- 탈퇴하기 전 컬렉션 삭제 -->
+	<delete id="leave_collection" parameterType="String">
+		delete from collection where u_idx=#{u_idx}
+	</delete>
+	
+	<!-- 탈퇴를 위해서 아이디를 남기고 나머지 값을 null로 만든다. -->
+	<update id="leave_update" parameterType="String">
+		update usr set u_pw=null, u_name=null, u_image=null, u_birth=null, u_gender=null, u_addr=null, u_tel=null, u_email=null, u_status=2 where u_idx=#{u_idx}		
+	</update>
+	
+	<!-- 검색(친구찾기_닉네임) -->
+	<select id="search_friends" parameterType="String" resultType="mybatis.UsrVO">
+		select * from usr where lower(u_name) like '%'||#{search_key}||'%' and u_status=0
+	</select>
+	
+	<!-- 검색(친구찾기_ID) -->
+	<select id="search_friends_id" parameterType="String" resultType="mybatis.UsrVO">
+		select * from usr where lower(u_id) like '%'||#{search_key}||'%' and u_status=0
+	</select>
+	
+	<!-- 검색(글 내용) -->
+	<select id="search_content" parameterType="String" resultType="mybatis.KiVO">
+		select * from (select b.u_name, b.u_image, a.* from ki a, usr b where a.u_idx = b.u_idx) where k_content like '%'||#{search_key}||'%'
+	</select>
+	
+	<!-- 검색(기 카테고리) -->
+	<select id="search_ki" parameterType="String" resultType="mybatis.KiVO">
+		select * from (select b.u_name, b.u_image, a.* from ki a, usr b where a.u_idx = b.u_idx) where k_kind = #{search_key}
+	</select>	
+	
+	<!-- 관리자 페이지에 필요한 모든 유저 수 구하기 -->
+	<select id="totalUserCount" resultType="int">
+   		select count(*) from usr
+	</select>
+	
+	<!-- 관리자 페이지에 필요한 모든 게시물 수 구하기 -->
+	<select id="totalKiCount" resultType="int">
+   		select count(*) from ki
+	</select>
+	
+	<!-- 리스트 구하기  -->
+	<select id="userList" parameterType="java.util.Map" resultType="mybatis.UsrVO">
+   		select * from (select rownum r_num, a.* from(select * from usr order by u_idx desc) a) where r_num between #{begin} and #{end}
+	</select>
+	
+	<!-- 리스트 구하기  -->
+	<select id="kiList" parameterType="java.util.Map" resultType="mybatis.KiVO">
+   		select * from (select rownum r_num, a.* from(select * from ki order by k_idx desc) a) where r_num between #{begin} and #{end}
+	</select>
+	
+	<!-- 리플 지우기 -->
+	<delete id="kire_del" parameterType="String">
+		delete from ki_re where r_idx=#{r_idx}
+	</delete>
+	
+</mapper>

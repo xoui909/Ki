@@ -1,0 +1,40 @@
+//전체 게시물
+select * from ki order by k_idx
+
+//글쓰기
+insert into ki values(ki_seq.nextval,#{u_idx},#{u_kind},#{u_content},#{u_image},#{u_max},0,sysdate);
+
+//글삭제
+delete from ki where k_idx = #{k_idx}
+
+//내글보기
+select * from ki where u_idx = #{u_idx} order by k_idx
+
+//친구글 보기
+select * from ki a
+inner join friend b
+on #{u_idx} = b.f_u_idx
+where b.f_idx = a.u_idx
+order by a.k_idx
+
+//hit수 증가
+update ki set k_hit=#{k_hit} where k_idx = #{k_idx} 
+
+//댓글 가져오기
+select * from ki_re where k_idx = #{k_idx}
+
+//친구목록보기
+select * from friend where f_u_idx = #{u_idx}
+
+//프로필 수정
+update usr set u_id =#{u_id},u_pw =#{u_pw},u_name =#{u_name},u_image =#{u_image},u_addr =#{u_addr},u_email =#{u_email},u_tel =#{u_tel} where u_idx = #{u_idx} 
+
+//회원가입
+insert into usr values(usr_seq.nextval,#{u_id}, #{u_pw},#{u_name},#{u_image},#{u_birth},#{u_gender},#{u_addr},#{u_tel},#{u_email},'0');
+
+//소원 빌기
+insert into wish values(wish_seq,nextval,#{u_id},'0','0',#{w_max_ki},#{w_content},sysdate) where u_idx = #{u_idx}
+
+//소원 내역 보기(3일기준)
+select *from
+wish where w_regdate <= (select to_char(sysdate,'YYYY-MM-DD')from dual) and  w_regdate >= (select to_char(sysdate-3,'YYYY-MM-DD')from dual) and u_idx = #{u_idx}

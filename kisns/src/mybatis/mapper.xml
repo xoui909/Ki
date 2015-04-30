@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ki">
+<!--회원가입-->
+	<insert id="join" parameterType="mybatis.UsrVO">
+		insert into usr values(usr_seq.nextval,#{u_id},#{u_pw},#{u_name},null,null,#{u_gender},null,#{u_tel},#{u_email},0)
+	</insert>	
+<!--로그인-->
+	<select id="login" parameterType="mybatis.UsrVO" resultType="mybatis.UsrVO">
+		select * from usr where u_id=#{u_id} and u_pw=#{u_pw}
+	</select>
+</mapper>

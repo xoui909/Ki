@@ -1,0 +1,49 @@
+//��ü �Խù�
+select * from ki order by k_idx
+
+//�۾���
+insert into ki values(ki_seq.nextval,#{u_idx},#{u_kind},#{u_content},#{u_image},#{u_max},0,sysdate);
+
+//�ۻ���
+delete from ki where k_idx = #{k_idx}
+
+//���ۺ���
+select * from ki where u_idx = #{u_idx} order by k_idx
+
+//ģ���� ����
+select * from ki a
+inner join friend b
+on #{u_idx} = b.f_u_idx
+where b.f_idx = a.u_idx
+order by a.k_idx
+
+//hit�� ����
+update ki set k_hit=#{k_hit} where k_idx = #{k_idx} 
+
+//��� ��������
+select * from ki_re where k_idx = #{k_idx}
+
+//ģ����Ϻ���
+select * from friend where f_u_idx = #{u_idx}
+
+//������ ����
+update usr set u_id =#{u_id},u_pw =#{u_pw},u_name =#{u_name},u_image =#{u_image},u_addr =#{u_addr},u_email =#{u_email},u_tel =#{u_tel} where u_idx = #{u_idx} 
+
+//ȸ����
+insert into usr values(usr_seq.nextval,#{u_id}, #{u_pw},#{u_name},#{u_image},#{u_birth},#{u_gender},#{u_addr},#{u_tel},#{u_email},0)
+
+//�ҿ� ����
+insert into wish values(wish_seq.nextval,#{u_id},'0','0',#{w_max_ki},#{w_content},sysdate) where u_idx = #{u_idx}
+
+//�ҿ� ���� ����(3�ϱ���)
+select *from
+wish where w_regdate <= (select to_char(sysdate,'YYYY-MM-DD')from dual) and  w_regdate >= (select to_char(sysdate-3,'YYYY-MM-DD')from dual) and u_idx = #{u_idx}
+
+//친구
+select c.u_name, c.u_image, a.* from ki a
+inner join friend b
+on #{u_idx} = b.f_u_idx
+inner join usr c
+on c.u_idx = a.u_idx
+where b.f_idx = a.u_idx
+order by a.k_idx

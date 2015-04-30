@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+
+body{
+	font-family: 'Nanum Gothic', 'PT Sans', sans-serif;
+}
+
+/* 드래그색상 */
+*::-moz-selection {
+	background-color: #2396d9;
+	color: #e84a88;;
+	color: #ffffff;
+}
+
+*::selection {
+	background-color: #FE7F85;
+	color: #e84a88;;
+	color: #ffffff;
+}

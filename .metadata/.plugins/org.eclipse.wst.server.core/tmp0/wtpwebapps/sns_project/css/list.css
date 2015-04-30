@@ -1,0 +1,92 @@
+@CHARSET "UTF-8";
+
+body {
+	background-color: #E9EAED !important;
+}
+
+.back {
+	background-color: white;
+	height: 100%;
+}
+
+.post-box {
+	list-style: none;
+}
+
+.post {
+	margin: 10px 0;
+	border-radius: 10px;
+	height: auto;
+}
+
+#post-box li {
+	display: none;
+}
+
+.post .file {
+	width: 100%;
+}
+
+.post-table td {
+	padding: 10px 20px;
+}
+
+.post-table .file-cell {
+	padding: 0px;
+}
+
+.margin {
+	margin: 10px 0;
+}
+
+.btnList {
+	list-style: none;
+}
+
+.file_div {
+	width: 100%;
+	height: 250px;
+	overflow-y: hidden;
+}
+
+/* 그림 클릭했을 때 새 레이어 나오는 css */
+div#glayLayer {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background: black;
+	filter: alpha(opacity = 60);
+	opacity: 0.60;
+}
+
+#overLayer {
+	display: none;
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	margin-top: -10%;
+	margin-left: -20%;
+}
+
+/* media query */
+@media screen and (max-width :980px) {
+	.media_margin_980 {
+		height: 40px;
+	}
+}
+
+@media screen and (max-width: 650px) {
+	.media_margin_980 {
+		display: none;
+	}
+	.media_margin_650 {
+		height: 35px;
+	}
+	.wrap {
+		margin-top: 40px !important;
+	}
+	
+}

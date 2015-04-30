@@ -1,0 +1,78 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MENU & LOGIN</title>
+
+<!-- for icons -->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- google web font -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400;300' rel='stylesheet' type='text/css'>
+
+<!-- jquery -->
+<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+
+<!-- jquery plugin -->
+<script type="text/javascript" src="js/jquery.leanModal.min.js"></script>
+
+<!-- custom js -->
+<script type="text/javascript" src="js/menu_js.js"></script>
+
+<!-- custom css -->
+<link href="css/menu_css.css" rel="stylesheet">
+
+<!--  -->
+
+<script type="text/javascript">
+$(function() {
+    $('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });       
+});
+</script>
+<style type="text/css">
+
+#lean_overlay {
+position: fixed;
+z-index: 10000;
+top: 0px;
+left: 0px;
+height:100%;
+width:100%;
+background: #000;
+display: none;
+}
+
+#file-popup{
+display: none;
+}
+
+</style>
+</head>
+<body>
+	<div class="menu">
+
+		<!-- Menu icon -->
+		<div class="icon-close">
+			<img src="images/close.png">
+		</div>
+
+		<!-- Menu -->
+		<ul>
+			<li><a href="#">내 글 보기</a></li>
+			<li><a href="#">친구 글 보기</a></li>
+			<li><a href="#">프로필 수정</a></li>
+			<li><a href="#">친구 목록</a></li>
+			<li><a href="#">소원 빌기</a></li>
+			<li><a href="#">로그아웃</a></li>
+		</ul>
+	</div>
+
+	<!-- Main body -->
+	<!-- show menu btn -->
+	<div class="icon-menu">
+		<i class="fa fa-bars"></i> My Page
+	</div>
+</body>
+</html>
